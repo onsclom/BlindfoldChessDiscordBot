@@ -3,6 +3,7 @@ Discord bot to practice blindfold chess with.
 
 ## How it works
 Start game with "!play". Make moves with >[chess notation].
+
 ![](demo.gif)
 
 ## Setup
