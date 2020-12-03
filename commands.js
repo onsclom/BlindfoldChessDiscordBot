@@ -20,17 +20,24 @@ module.exports = msg => {
   ) {
     commands[command](msg);
   } else if (msg.content[0] === '>') {
-    const game = games[msg.author.id];
-    const notation = msg.content.substring(1);
-    if (game.move(notation, {sloppy: true})) {
-      msg.channel.send(++game['move_amount']);
-    } else {
-      msg.channel.send('not a move dummy');
-    }
-    msg.reply('```' + game.ascii() + '```');
-    //
+    makeMove(msg);
   }
 };
+
+function makeMove(msg) {
+  const game = games[msg.author.id];
+  const notation = msg.content.substring(1);
+  if (game.move(notation, {sloppy: true})) {
+    ++game['move_amount'];
+    const moves = game.moves();
+    const move = moves[Math.floor(Math.random() * moves.length)];
+    game.move(move);
+    msg.channel.send(`${game['move_amount']}. ${move}`);
+  } else {
+    msg.channel.send('not a move!');
+  }
+  msg.channel.send('```' + game.ascii() + '```');
+}
 
 commands['ping'] = msg => {
   msg.reply('pong');
